@@ -1,19 +1,17 @@
 const mysql = require("mysql2");
 
-// ye "connection box" hai
 const db = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "your_password",   // yahan apna MySQL password dalna
+    password: "YOUR_PASSWORD",
     database: "mis_portal"
 });
 
-// connect try karega
 db.connect((err) => {
     if (err) {
-        console.log("❌ DB connection failed");
+        console.log(err);
     } else {
-        console.log("✅ MySQL Connected");
+        console.log("MySQL Connected");
     }
 });
 

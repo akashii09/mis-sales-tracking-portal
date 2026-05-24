@@ -6,13 +6,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// DB connect
-const db = require("./config/db");
+// ADD THIS
+const authRoutes = require("./routes/authRoutes");
+app.use("/api/auth", authRoutes);
 
 app.get("/", (req, res) => {
-    res.send("MIS PORTAL WORKING");
+  res.send("MIS Portal Backend Running");
 });
 
 app.listen(4000, () => {
-    console.log("Server running on 4000");
+  console.log("Server running on 4000");
 });
