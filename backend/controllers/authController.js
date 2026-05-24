@@ -1,8 +1,20 @@
 const db = require("../config/db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { validationResult } = require("express-validator");
 
+// LOGIN CONTROLLER
 const login = (req, res) => {
+
+    // VALIDATION CHECK (NEW ADDITION)
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.status(400).json({
+            message: "Validation error",
+            errors: errors.array()
+        });
+    }
 
     const { email, password } = req.body;
 
@@ -17,8 +29,6 @@ const login = (req, res) => {
             });
         }
 
-        console.log(result);
-
         if (result.length === 0) {
             return res.status(404).json({
                 message: "User not found"
@@ -27,6 +37,7 @@ const login = (req, res) => {
 
         const user = result[0];
 
+        // PASSWORD CHECK
         const isMatch = await bcrypt.compare(
             password,
             user.PasswordHash
@@ -38,6 +49,7 @@ const login = (req, res) => {
             });
         }
 
+        // JWT TOKEN GENERATION
         const token = jwt.sign(
             {
                 id: user.UserID,
@@ -55,7 +67,6 @@ const login = (req, res) => {
         });
 
     });
-
 };
 
 module.exports = { login };
