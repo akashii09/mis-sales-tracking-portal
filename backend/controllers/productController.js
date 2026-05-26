@@ -66,3 +66,114 @@ exports.addProduct = async (req, res) => {
   }
 
 };
+exports.getProducts = async (req, res) => {
+
+  try {
+
+    const sql = `
+      SELECT * FROM tbl_product
+      WHERE IsActive = 1
+    `;
+
+    db.query(sql, (err, result) => {
+
+      if (err) {
+        return res.status(500).json({
+          message: "Internal server error"
+        });
+      }
+
+      res.status(200).json(result);
+
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: "Internal server error"
+    });
+
+  }
+
+};
+exports.updateProduct = async (req, res) => {
+
+  try {
+
+    const { id } = req.params;
+    const { ProductCode, Name, Category, Unit } = req.body;
+
+    if (!ProductCode || !Name || !Category || !Unit) {
+
+      return res.status(400).json({
+        message: "All fields are required"
+      });
+
+    }
+
+    const sql = `
+      UPDATE tbl_product
+      SET ProductCode=?, Name=?, Category=?, Unit=?
+      WHERE ProductID=?
+    `;
+
+    db.query(sql,
+      [ProductCode, Name, Category, Unit, id],
+      (err, result) => {
+
+        if (err) {
+          return res.status(500).json({
+            message: "Internal server error"
+          });
+        }
+
+        res.status(200).json({
+          message: "Product updated successfully"
+        });
+
+      });
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: "Internal server error"
+    });
+
+  }
+
+};
+exports.deleteProduct = async (req, res) => {
+
+  try {
+
+    const { id } = req.params;
+
+    const sql = `
+      UPDATE tbl_product
+      SET IsActive = 0
+      WHERE ProductID = ?
+    `;
+
+    db.query(sql, [id], (err, result) => {
+
+      if (err) {
+        return res.status(500).json({
+          message: "Internal server error"
+        });
+      }
+
+      res.status(200).json({
+        message: "Product deleted successfully"
+      });
+
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: "Internal server error"
+    });
+
+  }
+
+};
