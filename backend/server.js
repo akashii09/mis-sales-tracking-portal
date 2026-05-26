@@ -1,25 +1,22 @@
 const express = require("express");
-const cors = require("cors");
-
 const app = express();
-
+const cors = require("cors");
+//
 app.use(cors());
 app.use(express.json());
 
-// AUTH ROUTES
-const authRoutes = require("./routes/authRoutes");
-app.use("/api/auth", authRoutes);
-
-// REGION ROUTES (NEW ADDITION)
+// routes
 const regionRoutes = require("./routes/regionRoutes");
+const productRoutes = require('./routes/productRoutes');
 app.use("/api/region", regionRoutes);
-
-// TEST ROUTE
+app.use('/api/products', productRoutes);
+// test route
 app.get("/", (req, res) => {
-  res.send("MIS Portal Backend Running");
+  res.send("Server is running fine");
 });
 
-//  SERVER START
-app.listen(4000, () => {
-  console.log("Server running on 4000");
+const PORT = 4000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
