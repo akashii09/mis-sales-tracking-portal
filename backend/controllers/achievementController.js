@@ -73,14 +73,10 @@ exports.addAchievement = async (req, res) => {
         });
     }
 };
-
-
-
 // GET ALL ACHIEVEMENTS
 exports.getAchievements = async (req, res) => {
 
     try {
-
         const [data] = await db.query(
             `SELECT
                 a.AchID,
@@ -111,15 +107,40 @@ exports.getAchievements = async (req, res) => {
 
     }
 };
-
-
-
 // UPDATE ACHIEVEMENT
 exports.updateAchievement = async (req, res) => {
 
     try {
 
         const { id } = req.params;
+
+        // FIND RECORD
+        const [existing] = await db.query(
+            `SELECT SaleDate FROM tbl_Achievement
+             WHERE AchID = ?`,
+            [id]
+        );
+
+        if (existing.length === 0) {
+            return res.status(404).json({
+                message: "Achievement record not found"
+            });
+        }
+
+        // CURRENT DATE
+        const today = new Date().toISOString().split("T")[0];
+
+        // DB DATE
+        const saleDate = new Date(existing[0].SaleDate)
+            .toISOString()
+            .split("T")[0];
+
+        // CHECK DATE
+        if (saleDate !== today) {
+            return res.status(403).json({
+                message: "Only current date entries can be updated"
+            });
+        }
 
         const {
             AchQty,
@@ -160,8 +181,6 @@ exports.updateAchievement = async (req, res) => {
     }
 };
 
-
-
 // SOFT DELETE
 exports.deleteAchievement = async (req, res) => {
 
@@ -169,6 +188,35 @@ exports.deleteAchievement = async (req, res) => {
 
         const { id } = req.params;
 
+        // FIND RECORD
+        const [existing] = await db.query(
+            `SELECT SaleDate FROM tbl_Achievement
+             WHERE AchID = ?`,
+            [id]
+        );
+
+        if (existing.length === 0) {
+            return res.status(404).json({
+                message: "Achievement record not found"
+            });
+        }
+
+        // TODAY DATE
+        const today = new Date().toISOString().split("T")[0];
+
+        // SALE DATE
+        const saleDate = new Date(existing[0].SaleDate)
+            .toISOString()
+            .split("T")[0];
+
+        // CHECK
+        if (saleDate !== today) {
+            return res.status(403).json({
+                message: "Only current date entries can be deleted"
+            });
+        }
+
+        // SOFT DELETE
         await db.query(
             `UPDATE tbl_Achievement
              SET IsActive = FALSE
@@ -190,8 +238,6 @@ exports.deleteAchievement = async (req, res) => {
 
     }
 };
-
-
 
 // TARGET VS ACHIEVEMENT
 exports.compareTargetAchievement = async (req, res) => {
