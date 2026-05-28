@@ -1,38 +1,43 @@
+const authMiddleware = require("../middleware/authMiddleware");
+
+const checkRole = require("../middleware/roleMiddleware");
 const express = require("express");
 
 const router = express.Router();
 
 const achievementController = require("../controllers/achievementController");
 
-
-// ADD
 router.post(
     "/add",
+    authMiddleware,
+    checkRole("Admin", "Manager", "Sales Executive"),
     achievementController.addAchievement
 );
 
-// GET
 router.get(
     "/all",
+    authMiddleware,
+    checkRole("Admin", "Manager", "Viewer"),
     achievementController.getAchievements
 );
 
-// UPDATE
 router.put(
     "/update/:id",
+    authMiddleware,
+    checkRole("Admin", "Manager", "Sales Executive"),
     achievementController.updateAchievement
 );
 
-// DELETE
 router.put(
     "/delete/:id",
+    authMiddleware,
+    checkRole("Admin"),
     achievementController.deleteAchievement
 );
 
-// TARGET VS ACHIEVEMENT
 router.get(
     "/compare",
+    authMiddleware,
+    checkRole("Admin", "Manager"),
     achievementController.compareTargetAchievement
 );
-
-module.exports = router;

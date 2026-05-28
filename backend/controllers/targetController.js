@@ -8,6 +8,13 @@ exports.addTarget = (req, res) => {
 
     const { SP_ID, ProductID, MonthYear, TargetQty, TargetValue } = req.body;
 
+    // MONTHLY SPLIT LOGIC
+    const weeklyTargetQty = TargetQty / 4;
+    const dailyTargetQty = TargetQty / 30;
+
+    const weeklyTargetValue = TargetValue / 4;
+    const dailyTargetValue = TargetValue / 30;
+
     if (!SP_ID || !ProductID || !MonthYear || !TargetQty || !TargetValue) {
       return res.status(400).json({
         message: "All fields are required"
@@ -59,7 +66,15 @@ exports.addTarget = (req, res) => {
           }
 
           res.status(201).json({
-            message: "Target added successfully"
+            message: "Target added successfully",
+
+            monthlyTargetQty: TargetQty,
+            weeklyTargetQty,
+            dailyTargetQty,
+
+            monthlyTargetValue: TargetValue,
+            weeklyTargetValue,
+            dailyTargetValue
           });
 
         }
@@ -199,3 +214,6 @@ exports.deleteTarget = (req, res) => {
   }
 
 };
+
+
+   

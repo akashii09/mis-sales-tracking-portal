@@ -1,25 +1,24 @@
 const express = require("express");
+
 const router = express.Router();
 
-const { login } = require("../controllers/authController");
+const authController = require("../controllers/authController");
 
-// middleware import
-const verifyToken = require("../middleware/authMiddleware");
+// LOGIN
+router.post(
+    "/login",
+    authController.login
+);
 
-// login route
-router.post("/login", login);
-
-// protected route
-router.get("/protected", verifyToken, (req, res) => {
-    res.json({
-        message: "Protected route working",
-        user: req.user
-    });
-});
-
-// logout route
-router.post("/logout", (req, res) => {
-    res.json({ message: "Logged out successfully" });
-});
+// FORGOT PASSWORD
+router.post(
+    "/forgot-password",
+    authController.forgotPassword
+);
+// RESET PASSWORD
+router.post(
+    "/reset-password",
+    authController.resetPassword
+);
 
 module.exports = router;

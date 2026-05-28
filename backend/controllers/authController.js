@@ -1,72 +1,185 @@
 const db = require("../config/db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { validationResult } = require("express-validator");
+
 
 // LOGIN CONTROLLER
-const login = (req, res) => {
+exports.login = (req, res) => {
 
-    // VALIDATION CHECK (NEW ADDITION)
-    const errors = validationResult(req);
+    const { Email, Password } = req.body;
 
-    if (!errors.isEmpty()) {
+    // VALIDATION
+    if (!Email || !Password) {
+
         return res.status(400).json({
-            message: "Validation error",
-            errors: errors.array()
+            message: "Email and Password are required"
         });
     }
 
-    const { email, password } = req.body;
+    // FIND USER
+    db.query(
+        `SELECT * FROM tbl_Users WHERE Email = ?`,
+        [Email],
+        async (err, result) => {
 
-    const sql = "SELECT * FROM tbl_Users WHERE Email = ?";
+            // DB ERROR
+            if (err) {
 
-    db.query(sql, [email], async (err, result) => {
+                console.log(err);
 
-        if (err) {
-            console.log(err);
-            return res.status(500).json({
-                message: "Database error"
+                return res.status(500).json({
+                    message: "Server Error"
+                });
+            }
+
+            // USER NOT FOUND
+            if (result.length === 0) {
+
+                return res.status(404).json({
+                    message: "User not found"
+                });
+            }
+
+            const user = result[0];
+
+            try {
+
+                // PASSWORD CHECK
+                const isMatch = await bcrypt.compare(
+                    Password,
+                    user.PasswordHash
+                );
+
+                // INVALID PASSWORD
+                if (!isMatch) {
+
+                    return res.status(401).json({
+                        message: "Invalid password"
+                    });
+                }
+
+                // JWT TOKEN
+                const token = jwt.sign(
+                    {
+                        UserID: user.UserID,
+                        Role: user.Role
+                    },
+                    process.env.JWT_SECRET,
+                    {
+                        expiresIn: "30m"
+                    }
+                );
+
+                // SUCCESS RESPONSE
+                return res.status(200).json({
+                    message: "Login successful",
+                    token
+                });
+
+            } catch (compareError) {
+
+                console.log(compareError);
+
+                return res.status(500).json({
+                    message: "Password compare failed"
+                });
+            }
+        }
+    );
+};
+
+
+
+// FORGOT PASSWORD
+exports.forgotPassword = (req, res) => {
+
+    const { Email } = req.body;
+
+    if (!Email) {
+
+        return res.status(400).json({
+            message: "Email is required"
+        });
+    }
+
+    db.query(
+        `SELECT * FROM tbl_Users WHERE Email = ?`,
+        [Email],
+        (err, result) => {
+
+            if (err) {
+
+                console.log(err);
+
+                return res.status(500).json({
+                    message: "Server Error"
+                });
+            }
+
+            if (result.length === 0) {
+
+                return res.status(404).json({
+                    message: "Email not found"
+                });
+            }
+
+            return res.status(200).json({
+                message: "User verified. Reset password allowed."
             });
         }
+    );
+};
 
-        if (result.length === 0) {
-            return res.status(404).json({
-                message: "User not found"
-            });
-        }
 
-        const user = result[0];
 
-        // PASSWORD CHECK
-        const isMatch = await bcrypt.compare(
-            password,
-            user.PasswordHash
+// RESET PASSWORD
+exports.resetPassword = async (req, res) => {
+
+    const { Email, NewPassword } = req.body;
+
+    if (!Email || !NewPassword) {
+
+        return res.status(400).json({
+            message: "All fields are required"
+        });
+    }
+
+    try {
+
+        // HASH PASSWORD
+        const hashedPassword = await bcrypt.hash(
+            NewPassword,
+            10
         );
 
-        if (!isMatch) {
-            return res.status(401).json({
-                message: "Wrong password"
-            });
-        }
+        db.query(
+            `UPDATE tbl_Users
+             SET PasswordHash = ?
+             WHERE Email = ?`,
+            [hashedPassword, Email],
+            (err, result) => {
 
-        // JWT TOKEN GENERATION
-        const token = jwt.sign(
-            {
-                id: user.UserID,
-                role: user.Role
-            },
-            "secretkey",
-            {
-                expiresIn: "1h"
+                if (err) {
+
+                    console.log(err);
+
+                    return res.status(500).json({
+                        message: "Server Error"
+                    });
+                }
+
+                return res.status(200).json({
+                    message: "Password reset successfully"
+                });
             }
         );
 
-        res.status(200).json({
-            message: "Login successful",
-            token
+    } catch (error) {
+
+        console.log(error);
+
+        return res.status(500).json({
+            message: "Password reset failed"
         });
-
-    });
+    }
 };
-
-module.exports = { login };
