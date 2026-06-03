@@ -59,7 +59,7 @@ await db.query(
     (UserID, Action, TableName, NewValue)
     VALUES (?, ?, ?, ?)`,
     [
-        13,
+        req.user.UserID,
         "INSERT",
         "tbl_Users",
         `User ${Username} created`
@@ -178,53 +178,6 @@ exports.deleteUser = async (req, res) => {
             message: "Server Error"
         }); }
 };
-
-
-
-
-// UPDATE USER
-exports.updateUser = async (req, res) => {
-
-    try {
-
-        const { id } = req.params;
-
-        const {
-            Username,
-            Role,
-            Email
-        } = req.body;
-
-        await db.query(
-            `UPDATE tbl_Users
-             SET Username = ?,
-                 Role = ?,
-                 Email = ?
-             WHERE UserID = ?`,
-            [
-                Username,
-                Role,
-                Email,
-                id
-            ]
-        );
-
-        return res.status(200).json({
-            message: "User updated successfully"
-        });
-
-    } catch (error) {
-
-        console.log(error);
-
-        return res.status(500).json({
-            message: "Server Error"
-        });
-    }
-};
-
-
-
 // SOFT DELETE
 exports.deleteUser = async (req, res) => {
 

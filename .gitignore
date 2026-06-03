@@ -1,1 +1,8 @@
 .DS_Store
+node_modules/
+.vscode/
+.DS_Store
+postman/
+.postman/
+*.png
+package-lock.json

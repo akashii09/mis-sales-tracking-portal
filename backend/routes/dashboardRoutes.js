@@ -19,3 +19,29 @@ router.get(
     verifyToken,
     dashboardController.getRecentActivity
 );
+
+router.get(
+    "/kpi",
+    verifyToken,
+    dashboardController.getKPI
+);
+router.get(
+    "/bar-chart",
+    dashboardController.getBarChart
+);
+router.get(
+    "/product-contribution",
+    dashboardController.getProductContribution
+);
+router.get(
+    "/trend",
+    dashboardController.getTrend
+);
+router.get(
+    "/top-performers",
+    dashboardController.getTopPerformers
+);
+router.get(
+    "/bottom-performers",
+    dashboardController.getBottomPerformers
+);

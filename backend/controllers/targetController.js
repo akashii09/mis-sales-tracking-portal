@@ -3,6 +3,7 @@ const db = require('../config/db');
 
 // ADD TARGET
 exports.addTarget = (req, res) => {
+  console.log("ADD TARGET API HIT");
 
   try {
 

@@ -41,3 +41,4 @@ router.get(
     checkRole("Admin", "Manager"),
     achievementController.compareTargetAchievement
 );
+module.exports = router;

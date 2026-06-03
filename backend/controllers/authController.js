@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 
+
 // LOGIN CONTROLLER
 exports.login = async (req, res) => {
 
@@ -13,9 +14,12 @@ exports.login = async (req, res) => {
 
     try {
 
-        const { Email, Password } = req.body;
+        const { email, password } = req.body;
 
-        if (!Email || !Password) {
+        console.log("Email =", email);
+        console.log("PasswordHash =", password);
+
+            if (!email || !password) {
             return res.status(400).json({
                 message: "Email and Password are required"
             });
@@ -23,7 +27,7 @@ exports.login = async (req, res) => {
 
         const [result] = await db.query(
             "SELECT * FROM tbl_Users WHERE Email = ?",
-            [Email]
+            [email]
         );
 
         console.log("QUERY COMPLETED");
@@ -39,7 +43,7 @@ exports.login = async (req, res) => {
         console.log("USER FOUND =", user.Email);
 
         const isMatch = await bcrypt.compare(
-            Password,
+            password,
             user.PasswordHash
         );
 
@@ -68,23 +72,34 @@ exports.login = async (req, res) => {
         });
 
     } catch (error) {
+    console.error("LOGIN ERROR FULL =", error);
+    console.error("MESSAGE =", error.message);
+    console.error("STACK =", error.stack);
 
-        console.log("LOGIN ERROR =", error);
-
-        return res.status(500).json({
-            message: "Server Error"
-        });
-    }
+    return res.status(500).json({
+        message: error.message
+    });
+}
 };
 
 
+/*
+exports.login = async (req, res) => {
 
+    console.log("LOGIN CONTROLLER HIT");
+
+    return res.status(200).json({
+        message: "LOGIN TEST SUCCESS"
+    });
+
+};
+*/
 // FORGOT PASSWORD
 exports.forgotPassword = (req, res) => {
 
-    const { Email } = req.body;
+    const { email } = req.body;
 
-    if (!Email) {
+    if (!email) {
         return res.status(400).json({
             message: "Email is required"
         });
@@ -92,7 +107,7 @@ exports.forgotPassword = (req, res) => {
 
     db.query(
         "SELECT * FROM tbl_Users WHERE Email = ?",
-        [Email],
+        [email],
         (err, result) => {
 
             if (err) {
