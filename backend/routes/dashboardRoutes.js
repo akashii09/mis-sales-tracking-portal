@@ -22,7 +22,6 @@ router.get(
 
 router.get(
     "/kpi",
-    verifyToken,
     dashboardController.getKPI
 );
 router.get(
