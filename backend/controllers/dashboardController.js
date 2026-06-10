@@ -82,46 +82,91 @@ exports.getRecentActivity = async (req, res) => {
     }
 };
 exports.getKPI = async (req, res) => {
+const view =req.query.view || "month";
    try {
+      
+      let achievementQuery = "";
+      let targetQuery = "";
+      if(view === "day"){
 
-      const [todayAch] = await db.query(`
-         SELECT IFNULL(SUM(AchQty),0) AS todayAchievement
-         FROM tbl_Achievement
-         WHERE SaleDate = CURDATE()
-         AND IsActive = TRUE
-      `);
+        achievementQuery = `
+        SELECT IFNULL(SUM(AchQty),0)
+        AS achievement
+        FROM tbl_Achievement
+        WHERE SaleDate = CURDATE()
+        AND IsActive = TRUE
+        `;
 
-      const [mtdAch] = await db.query(`
-         SELECT IFNULL(SUM(AchQty),0) AS mtdAchievement
-         FROM tbl_Achievement
-         WHERE MONTH(SaleDate)=MONTH(CURDATE())
-         AND YEAR(SaleDate)=YEAR(CURDATE())
-         AND IsActive = TRUE
-      `);
+        targetQuery = `
+        SELECT IFNULL(SUM(TargetQty),0)
+        AS target
+        FROM tbl_Target
+        WHERE MONTH(MonthYear)=MONTH(CURDATE())
+        AND YEAR(MonthYear)=YEAR(CURDATE())
+        AND IsActive = TRUE
+        `;
+    }
+     if(view === "week"){
 
-      const [target] = await db.query(`
-         SELECT IFNULL(SUM(TargetQty),0) AS mtdTarget
-         FROM tbl_Target
-         WHERE MONTH(MonthYear)=MONTH(CURDATE())
-         AND YEAR(MonthYear)=YEAR(CURDATE())
-         AND IsActive = TRUE
-      `);
+       achievementQuery = `
+       SELECT IFNULL(SUM(AchQty),0)
+       AS achievement
+       FROM tbl_Achievement
+       WHERE YEARWEEK(SaleDate,1)
+       =
+       YEARWEEK(CURDATE(),1)
+       AND IsActive = TRUE
+       `;
+
+       targetQuery = `
+       SELECT IFNULL(SUM(TargetQty),0)
+       AS target
+       FROM tbl_Target
+       WHERE MONTH(MonthYear)=MONTH(CURDATE())
+       AND YEAR(MonthYear)=YEAR(CURDATE())
+       AND IsActive = TRUE
+       `;
+    }
+      if(view === "month"){
+
+       achievementQuery = `
+       SELECT IFNULL(SUM(AchQty),0)
+       AS achievement
+       FROM tbl_Achievement
+       WHERE MONTH(SaleDate)=MONTH(CURDATE())
+       AND YEAR(SaleDate)=YEAR(CURDATE())
+       AND IsActive = TRUE
+       `;
+
+       targetQuery = `
+       SELECT IFNULL(SUM(TargetQty),0)
+       AS target
+       FROM tbl_Target
+       WHERE MONTH(MonthYear)=MONTH(CURDATE())
+       AND YEAR(MonthYear)=YEAR(CURDATE())
+       AND IsActive = TRUE
+       `;
+
+    } 
+    const [achData] = await db.query(achievementQuery);
+
+    const [targetData] = await db.query(targetQuery);
 
       const achievementPercent =
-      target[0].mtdTarget > 0
-      ? ((mtdAch[0].mtdAchievement /
-      target[0].mtdTarget) * 100).toFixed(2)
+      targetData[0].target > 0
+      ? ((achData[0].achievement /
+      targetData[0].target) * 100).toFixed(2)
       : 0;
 
       res.status(200).json({
-         todayAchievement:
-         todayAch[0].todayAchievement,
 
-         mtdAchievement:
-         mtdAch[0].mtdAchievement,
+         view,
 
-         mtdTarget:
-         target[0].mtdTarget,
+         achievement:
+         achData[0].achievement,
+
+         target:
+         targetData[0].target,
 
          achievementPercent
       });

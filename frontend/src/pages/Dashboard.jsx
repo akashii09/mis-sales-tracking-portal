@@ -30,38 +30,32 @@ function Dashboard() {
   const [trendData, setTrendData] = useState([]);
   const [topPerformers, setTopPerformers] = useState([]);
   const [bottomPerformers, setBottomPerformers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [view, setView] = useState("month");
 
   useEffect(() => {
-    // KPI
-    axios
-      .get("http://localhost:4000/api/dashboard/kpi")
-      .then((res) => setKpi(res.data))
-      .catch((err) => console.log(err));
-
-    // Product Contribution
-    axios
-      .get("http://localhost:4000/api/dashboard/product-contribution")
-      .then((res) => setProductData(res.data))
-      .catch((err) => console.log(err));
-
-    // Trend
-    axios
-      .get("http://localhost:4000/api/dashboard/trend")
-      .then((res) => setTrendData(res.data))
-      .catch((err) => console.log(err));
-
-    // Top Performers
-    axios
-      .get("http://localhost:4000/api/dashboard/top-performers")
-      .then((res) => setTopPerformers(res.data))
-      .catch((err) => console.log(err));
-
-    // Bottom Performers
-    axios
-      .get("http://localhost:4000/api/dashboard/bottom-performers")
-      .then((res) => setBottomPerformers(res.data))
-      .catch((err) => console.log(err));
-  }, []);
+  Promise.all([
+    axios.get(`http://localhost:4000/api/dashboard/kpi?view=${view}`),
+    axios.get("http://localhost:4000/api/dashboard/product-contribution"),
+    axios.get("http://localhost:4000/api/dashboard/trend"),
+    axios.get("http://localhost:4000/api/dashboard/top-performers"),
+    axios.get("http://localhost:4000/api/dashboard/bottom-performers"),
+  ])
+    .then(([kpiRes, productRes, trendRes, topRes, bottomRes]) => {
+      setKpi(kpiRes.data);
+      setProductData(productRes.data);
+      setTrendData(trendRes.data);
+      setTopPerformers(topRes.data);
+      setBottomPerformers(bottomRes.data);
+      setLoading(false);
+    })
+    .catch((err) => {
+      console.error(err);
+      setError("Failed to load dashboard data");
+      setLoading(false);
+    });
+}, [view]);
 
   const pieData = {
     labels: productData.map((item) => item.Name),
@@ -89,27 +83,71 @@ function Dashboard() {
       },
     ],
   };
+if (loading) {
+  return <div className="loading">Loading Dashboard...</div>;
+}
 
+if (error) {
+  return <div className="error">{error}</div>;
+}
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>MIS Dashboard</h1>
+    <div>
+      <h1>MIS Dashboard</h1><div style={{ marginBottom: "20px" }}>
 
+      <button
+onClick={() => setView("day")}
+>
+Day
+</button>
+
+<button
+onClick={() => setView("week")}
+style={{ marginLeft: "10px" }}
+>
+Week
+</button>
+
+<button
+onClick={() => setView("month")}
+style={{ marginLeft: "10px" }}
+>
+Month
+</button>
+
+</div>
       <hr />
 
       <h2>KPI Summary</h2>
 
-      <div>
-        <h3>Today Achievement: {kpi.todayAchievement}</h3>
-        <h3>MTD Achievement: {kpi.mtdAchievement}</h3>
-        <h3>MTD Target: {kpi.mtdTarget}</h3>
-        <h3>Achievement %: {kpi.achievementPercent}</h3>
-      </div>
+      <div className="kpi-container">
+
+  <div className="kpi-card">
+    <h3>{view.toUpperCase()} Achievement</h3>
+    <p>{kpi.achievement}</p>
+  </div>
+
+  <div className="kpi-card">
+    <h3>Selected Achievement</h3>
+    <p>{kpi.achievement}</p>
+  </div>
+
+  <div className="kpi-card">
+    <h3>{view.toUpperCase()}  Target</h3>
+    <p>{kpi.target}</p>
+  </div>
+
+  <div className="kpi-card">
+    <h3>Achievement %</h3>
+    <p>{kpi.achievementPercent}%</p>
+  </div>
+
+</div>
 
       <hr />
 
       <h2>Product Contribution</h2>
 
-      <div style={{ width: "500px" }}>
+      <div className="chart-container">
         <Pie data={pieData} />
       </div>
 
@@ -117,15 +155,17 @@ function Dashboard() {
 
       <h2>Sales Trend</h2>
 
-      <div style={{ width: "700px" }}>
+      <div className="chart-container">
         <Line data={lineData} />
       </div>
 
       <hr />
 
       <h2>Top Performers</h2>
-
-      <table border="1" cellPadding="10">
+{topPerformers.length === 0 && (
+  <p>No Data Available</p>
+)}
+      <table>
         <thead>
           <tr>
             <th>Name</th>
@@ -146,7 +186,9 @@ function Dashboard() {
       <hr />
 
       <h2>Bottom Performers</h2>
-
+{bottomPerformers.length === 0 && (
+  <p>No Data Available</p>
+)}
       <table border="1" cellPadding="10">
         <thead>
           <tr>
@@ -167,5 +209,6 @@ function Dashboard() {
     </div>
   );
 }
+
 
 export default Dashboard;
