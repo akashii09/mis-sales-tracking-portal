@@ -1,3 +1,5 @@
+.env
+Backend/.env
 .DS_Store
 node_modules/
 .vscode/
@@ -5,4 +7,4 @@ node_modules/
 postman/
 .postman/
 *.png
-package-lock.json
+package-lock.jsonbackend/.env
