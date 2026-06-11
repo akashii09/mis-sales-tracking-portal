@@ -2,7 +2,7 @@ const db = require('../config/db');
 
 
 // ADD TARGET
-exports.addTarget = (req, res) => {
+exports.addTarget = async (req, res) => {
   console.log("ADD TARGET API HIT");
 
   try {
@@ -33,13 +33,7 @@ exports.addTarget = (req, res) => {
       WHERE SP_ID = ? AND ProductID = ? AND MonthYear = ?
     `;
 
-    db.query(checkSql, [SP_ID, ProductID, formattedMonth], (err, data) => {
-
-      if (err) {
-        return res.status(500).json({
-          message: "Internal server error"
-        });
-      }
+    const [data] = await db.query(checkSql,[SP_ID, ProductID, formattedMonth]);
 
       if (data.length > 0) {
         return res.status(400).json({
@@ -54,17 +48,9 @@ exports.addTarget = (req, res) => {
         VALUES (?, ?, ?, ?, ?)
       `;
 
-      db.query(
+      await db.query(
         sql,
-        [SP_ID, ProductID, formattedMonth, TargetQty, TargetValue],
-        (err, result) => {
-
-          if (err) {
-            console.log(err);
-            return res.status(500).json({
-              message: "Internal server error"
-            });
-          }
+        [SP_ID, ProductID, formattedMonth, TargetQty, TargetValue]);
 
           res.status(201).json({
             message: "Target added successfully",
@@ -77,23 +63,16 @@ exports.addTarget = (req, res) => {
             weeklyTargetValue,
             dailyTargetValue
           });
+         
+      } catch (error) {
 
-        }
-      );
-
-    });
-
-  } catch (error) {
-    res.status(500).json({
-      message: "Internal server error"
-    });
-  }
-
-};
-
-
+         res.status(500).json({
+          message: error.message
+        });
+      }
+    };
 //GET TARGETS (WITH JOIN)
-exports.getTargets = (req, res) => {
+exports.getTargets = async (req, res) => {
 
   try {
 
@@ -114,30 +93,21 @@ exports.getTargets = (req, res) => {
       ORDER BY t.TargetID DESC
     `;
 
-    db.query(sql, (err, result) => {
+    const [result] = await db.query(sql);
+    res.status(200).json(result);
 
-      if (err) {
-        console.log(err);
-        return res.status(500).json({
-          message: "Internal server error"
-        });
-      }
+ } catch (error) {
 
-      res.status(200).json(result);
+    console.log(error);
 
-    });
-
-  } catch (error) {
     res.status(500).json({
-      message: "Internal server error"
+      message: error.message
     });
   }
-
-};
-
+}
 
 //UPDATE TARGET
-exports.updateTarget = (req, res) => {
+exports.updateTarget = async (req, res) => {
 
   try {
 
@@ -156,32 +126,19 @@ exports.updateTarget = (req, res) => {
       WHERE TargetID = ?
     `;
 
-    db.query(sql, [TargetQty, TargetValue, id], (err, result) => {
+    await db.query(sql, [TargetQty, TargetValue, id]);
 
-      if (err) {
-        console.log(err);
-        return res.status(500).json({
-          message: "Internal server error"
-        });
-      }
-
-      res.status(200).json({
+    res.status(200).json({
         message: "Target updated successfully"
-      });
-
     });
-
-  } catch (error) {
+   } catch (error) {
     res.status(500).json({
       message: "Internal server error"
     });
-  }
-
-};
-
-
+   }
+  };
 //SOFT DELETE TARGET
-exports.deleteTarget = (req, res) => {
+exports.deleteTarget = async (req, res) => {
 
   try {
 
@@ -193,27 +150,17 @@ exports.deleteTarget = (req, res) => {
       WHERE TargetID = ?
     `;
 
-    db.query(sql, [id], (err, result) => {
+    await db.query(sql, [id]);
 
-      if (err) {
-        console.log(err);
-        return res.status(500).json({
-          message: "Internal server error"
-        });
-      }
-
-      res.status(200).json({
-        message: "Target deleted successfully"
+    res.status(200).json({
+      message: "Target deleted successfully"
       });
 
-    });
-
-  } catch (error) {
+    } catch (error) {
     res.status(500).json({
-      message: "Internal server error"
+      message: "error.message"
     });
-  }
-
+   }
 };
 
 

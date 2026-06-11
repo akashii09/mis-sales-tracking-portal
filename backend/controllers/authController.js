@@ -95,87 +95,82 @@ exports.login = async (req, res) => {
 };
 */
 // FORGOT PASSWORD
-exports.forgotPassword = (req, res) => {
-
-    const { email } = req.body;
-
-    if (!email) {
-        return res.status(400).json({
-            message: "Email is required"
-        });
-    }
-
-    db.query(
-        "SELECT * FROM tbl_Users WHERE Email = ?",
-        [email],
-        (err, result) => {
-
-            if (err) {
-                console.log(err);
-
-                return res.status(500).json({
-                    message: "Server Error"
-                });
-            }
-
-            if (result.length === 0) {
-                return res.status(404).json({
-                    message: "Email not found"
-                });
-            }
-
-            return res.status(200).json({
-                message: "User verified. Reset password allowed."
-            });
-        }
-    );
-};
-
-// RESET PASSWORD
-exports.resetPassword = async (req, res) => {
-
-    const { Email, NewPassword } = req.body;
-
-    if (!Email || !NewPassword) {
-        return res.status(400).json({
-            message: "All fields are required"
-        });
-    }
+exports.forgotPassword = async (req, res) => {
 
     try {
 
-        const hashedPassword = await bcrypt.hash(
-            NewPassword,
-            10
+        const { email } = req.body;
+
+        if (!email) {
+            return res.status(400).json({
+                message: "Email is required"
+            });
+        }
+
+        const [result] = await db.query(
+            "SELECT * FROM tbl_Users WHERE Email = ?",
+            [email]
         );
 
-        db.query(
-            `UPDATE tbl_Users
-             SET PasswordHash = ?
-             WHERE Email = ?`,
-            [hashedPassword, Email],
-            (err, result) => {
+        if (result.length === 0) {
+            return res.status(404).json({
+                message: "Email not found"
+            });
+        }
 
-                if (err) {
-                    console.log(err);
-
-                    return res.status(500).json({
-                        message: "Server Error"
-                    });
-                }
-
-                return res.status(200).json({
-                    message: "Password reset successfully"
-                });
-            }
-        );
+        return res.status(200).json({
+            message: "User verified. Reset password allowed."
+        });
 
     } catch (error) {
 
         console.log(error);
 
         return res.status(500).json({
-            message: "Password reset failed"
+            message: error.message
         });
+
     }
+
+};
+
+// RESET PASSWORD
+exports.resetPassword = async (req, res) => {
+
+    try {
+
+        const { Email, NewPassword } = req.body;
+
+        if (!Email || !NewPassword) {
+            return res.status(400).json({
+                message: "All fields are required"
+            });
+        }
+
+        const hashedPassword = await bcrypt.hash(
+            NewPassword,
+            10
+        );
+
+        await db.query(
+            `UPDATE tbl_Users
+             SET PasswordHash = ?
+             WHERE Email = ?`,
+            [hashedPassword, Email]
+        );
+
+        return res.status(200).json({
+            message: "Password reset successfully"
+        });
+
+    } catch (error) {
+
+        console.log(error);
+
+        return res.status(500).json({
+            message: error.message
+        });
+
+    }
+
 };
