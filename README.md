@@ -53,7 +53,7 @@ http://localhost:4000/api-docs
 - Targets & Achievements
 - Region Management
 - Dashboard Analytics
-- Reports (Variance & Achievement)cd 
+- Reports (Variance & Achievement)
 
 ## Note
 Swagger documentation is available at /api-docs
