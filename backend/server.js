@@ -5,6 +5,9 @@ const cors = require("cors");
 
 const app = express();
 
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpec = require("./config/swagger");
+
 // IMPORT ROUTES
 const authRoutes = require("./routes/authRoutes");
 const salesPersonRoutes = require("./routes/salesPersonRoutes");
@@ -35,6 +38,7 @@ app.use((req, res, next)=>{
     next();
 });
 
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 // ROUTES
 app.use("/api/auth", authRoutes);
 app.use("/api/salesperson", salesPersonRoutes);
