@@ -10,3 +10,7 @@ postman/
 
 *.png
 
+
+package-lock.json
+**/package-lock.json
+
