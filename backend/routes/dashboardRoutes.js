@@ -1,5 +1,5 @@
 const express = require("express");
-console.log("DASHBOARD ROUTES FILE LOADED");
+
 const router = express.Router();
 
 const dashboardController = require("../controllers/dashboardController");

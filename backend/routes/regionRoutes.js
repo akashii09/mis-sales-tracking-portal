@@ -3,12 +3,7 @@ const router = express.Router();
 
 const regionController = require("../controllers/regionController");
 
-// Debug middleware (temporary)
-router.use((req, res, next) => {
-  console.log("ROUTE HIT:", req.method, req.url);
-  console.log("BODY:", req.body);
-  next();
-});
+
 /**
  * @swagger
  * tags:

@@ -1,5 +1,4 @@
-const express = require("express");
-console.log("REPORT ROUTES FILE LOADED");   
+const express = require("express");  
 
 const router = express.Router();
 /**
