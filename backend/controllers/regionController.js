@@ -31,11 +31,11 @@ exports.addRegion = async (req, res) => {
       sql,
       [RegionName, Zone, State, City]
     );
-    res.status(201).json({
+    return res.status(201).json({
       message: "Region added successfully"
     });
     } catch (error) {
-     res.status(500).json({
+     return res.status(500).json({
       message: error.message
     });
     }
@@ -50,7 +50,7 @@ exports.getRegions = async (req, res) => {
      WHERE IsActive = 1
     `;
      const [result] = await db.query(sql);
-     res.status(200).json(result);
+     return res.status(200).json(result);
     } catch (error) {
     res.status(500).json({
       message: error.message
@@ -78,11 +78,11 @@ exports.updateRegion = async (req, res) => {
       sql,
       [RegionName, Zone, State, City, id]
     );
-     res.status(200).json({
+     return res.status(200).json({
       message: "Region updated successfully"
     });
 } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       message: error.message
     });
    }
@@ -98,12 +98,12 @@ exports.deleteRegion = async (req, res) => {
       WHERE RegionID = ?
     `;
      await db.query(sql, [id]);
-     res.status(200).json({
+     return res.status(200).json({
       message: "Region deleted successfully"
     });
    } catch (error) {
 
-     res.status(500).json({
+     return res.status(500).json({
       message: error.message
     });
  }

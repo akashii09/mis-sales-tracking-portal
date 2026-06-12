@@ -8,18 +8,10 @@ const jwt = require("jsonwebtoken");
 
 // LOGIN CONTROLLER
 exports.login = async (req, res) => {
-
-    console.log("LOGIN API HIT");
-    console.log("BODY =", req.body);
-
-    try {
+     try {
 
         const { email, password } = req.body;
-
-        console.log("Email =", email);
-        console.log("PasswordHash =", password);
-
-            if (!email || !password) {
+             if (!email || !password) {
             return res.status(400).json({
                 message: "Email and Password are required"
             });
@@ -29,9 +21,7 @@ exports.login = async (req, res) => {
             "SELECT * FROM tbl_Users WHERE Email = ?",
             [email]
         );
-
-        console.log("QUERY COMPLETED");
-
+        
         if (result.length === 0) {
             return res.status(404).json({
                 message: "User not found"
@@ -40,15 +30,13 @@ exports.login = async (req, res) => {
 
         const user = result[0];
 
-        console.log("USER FOUND =", user.Email);
-
+        
         const isMatch = await bcrypt.compare(
             password,
             user.PasswordHash
         );
 
-        console.log("PASSWORD MATCH =", isMatch);
-
+        
         if (!isMatch) {
             return res.status(401).json({
                 message: "Invalid password"
@@ -79,21 +67,11 @@ exports.login = async (req, res) => {
     return res.status(500).json({
         message: error.message
     });
-}
+ }
 };
 
 
-/*
-exports.login = async (req, res) => {
 
-    console.log("LOGIN CONTROLLER HIT");
-
-    return res.status(200).json({
-        message: "LOGIN TEST SUCCESS"
-    });
-
-};
-*/
 // FORGOT PASSWORD
 exports.forgotPassword = async (req, res) => {
 
@@ -124,7 +102,7 @@ exports.forgotPassword = async (req, res) => {
 
     } catch (error) {
 
-        console.log(error);
+        console.error(error);
 
         return res.status(500).json({
             message: error.message
@@ -165,7 +143,7 @@ exports.resetPassword = async (req, res) => {
 
     } catch (error) {
 
-        console.log(error);
+        console.error(error);
 
         return res.status(500).json({
             message: error.message

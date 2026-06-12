@@ -61,14 +61,14 @@ exports.addAchievement = async (req, res) => {
             ]
         );
 
-        res.status(201).json({
+        return res.status(201).json({
             message: "Achievement added successfully"
         });
 
     } catch (error) {
-        console.log(error);
+        console.error(error);
 
-        res.status(500).json({
+        return res.status(500).json({
             message: "Server Error"
         });
     }
@@ -95,13 +95,13 @@ exports.getAchievements = async (req, res) => {
             WHERE a.IsActive = TRUE`
         );
 
-        res.status(200).json(data);
+        return res.status(200).json(data);
 
     } catch (error) {
 
-        console.log(error);
+        console.error(error);
 
-        res.status(500).json({
+        return res.status(500).json({
             message: "Server Error"
         });
 
@@ -166,15 +166,15 @@ exports.updateAchievement = async (req, res) => {
             ]
         );
 
-        res.status(200).json({
+        return res.status(200).json({
             message: "Achievement updated successfully"
         });
 
     } catch (error) {
 
-        console.log(error);
+        console.error(error);
 
-        res.status(500).json({
+        return res.status(500).json({
             message: "Server Error"
         });
 
@@ -224,15 +224,15 @@ exports.deleteAchievement = async (req, res) => {
             [id]
         );
 
-        res.status(200).json({
+        return res.status(200).json({
             message: "Achievement deleted successfully"
         });
 
     } catch (error) {
 
-        console.log(error);
+        console.error(error);
 
-        res.status(500).json({
+        return res.status(500).json({
             message: "Server Error"
         });
 
@@ -272,13 +272,13 @@ exports.compareTargetAchievement = async (req, res) => {
             t.TargetQty`
         );
 
-        res.status(200).json(data);
+       return res.status(200).json(data);
 
     } catch (error) {
 
-        console.log(error);
+        console.error(error);
 
-        res.status(500).json({
+        return res.status(500).json({
             message: "Server Error"
         });
 

@@ -30,11 +30,11 @@ exports.addSalesPerson = async (req, res) => {
       sql,
       [SP_Code, Name, Email, RegionID, ManagerID || null]
     );
-    res.status(201).json({
+    return res.status(201).json({
       message: "Sales Person added successfully"
     });
    } catch (error) {
-     res.status(500).json({
+     return res.status(500).json({
       message: error.message
     });
    }
@@ -49,10 +49,10 @@ exports.getSalesPersons = async (req, res) => {
       WHERE IsActive = 1
     `;
      const [result] = await db.query(sql);
-     res.status(200).json(result);
+     return res.status(200).json(result);
     } catch (error) {
 
-    res.status(500).json({
+    return res.status(500).json({
       message: error.message
     });
    }
@@ -78,11 +78,11 @@ exports.updateSalesPerson = async (req, res) => {
       sql,
       [SP_Code, Name, Email, RegionID, ManagerID || null, id]
     );
-     res.status(200).json({
+     return res.status(200).json({
       message: "Sales Person updated successfully"
     });
   } catch (error) {
-     res.status(500).json({
+     return res.status(500).json({
       message: error.message
     });
    }
@@ -98,12 +98,12 @@ exports.deleteSalesPerson = async (req, res) => {
       WHERE SP_ID = ?
     `;
      await db.query(sql, [id]);
-    res.status(200).json({
+    return res.status(200).json({
       message: "Sales Person deleted successfully"
     });
  } catch (error) {
 
-    res.status(500).json({
+    return res.status(500).json({
       message: error.message
     });
    }

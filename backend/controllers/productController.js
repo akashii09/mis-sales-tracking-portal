@@ -30,11 +30,11 @@ exports.addProduct = async (req, res) => {
     await db.query(sql,
       [ProductCode, Name, Category, Unit]
     );
-    res.status(201).json({
+    return res.status(201).json({
       message: "Product added successfully"
     });
 } catch (error) {
-  res.status(500).json({
+  return res.status(500).json({
       message: error.message
     });
  }
@@ -49,7 +49,7 @@ exports.getProducts = async (req, res) => {
      const [result] = await db.query(sql);
      res.status(200).json(result);
   } catch (error) {
-     res.status(500).json({
+     return res.status(500).json({
       message: error.message
     });
    }
@@ -75,12 +75,12 @@ exports.updateProduct = async (req, res) => {
      await db.query(sql,
       [ProductCode, Name, Category, Unit, id]
     );
-    res.status(200).json({
+    return res.status(200).json({
       message: "Product updated successfully"
     });
     } catch (error) {
 
-    res.status(500).json({
+    return res.status(500).json({
       message: error.message
     });
    }
@@ -97,11 +97,11 @@ exports.deleteProduct = async (req, res) => {
       WHERE ProductID = ?
     `;
    await db.query(sql, [id]);
-   res.status(200).json({
+   return res.status(200).json({
       message: "Product deleted successfully"
     });
    } catch (error) {
-     res.status(500).json({
+     return res.status(500).json({
       message: error.message
     });
    }
