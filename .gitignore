@@ -1,10 +1,12 @@
 .env
-Backend/.env
+backend/.env
+
 .DS_Store
 node_modules/
 .vscode/
-.DS_Store
+
 postman/
 .postman/
+
 *.png
-package-lock.jsonbackend/.env
+
