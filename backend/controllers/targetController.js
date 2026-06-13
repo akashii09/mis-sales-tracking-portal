@@ -3,7 +3,7 @@ const db = require('../config/db');
 
 // ADD TARGET
 exports.addTarget = async (req, res) => {
-  console.log("ADD TARGET API HIT");
+
 
   try {
 
@@ -66,7 +66,7 @@ exports.addTarget = async (req, res) => {
          
       } catch (error) {
 
-         res.status(500).json({
+         return res.status(500).json({
           message: error.message
         });
       }
@@ -94,13 +94,13 @@ exports.getTargets = async (req, res) => {
     `;
 
     const [result] = await db.query(sql);
-    res.status(200).json(result);
+    return res.status(200).json(result);
 
  } catch (error) {
 
-    console.log(error);
+    console.error(error);
 
-    res.status(500).json({
+    return res.status(500).json({
       message: error.message
     });
   }
@@ -128,11 +128,11 @@ exports.updateTarget = async (req, res) => {
 
     await db.query(sql, [TargetQty, TargetValue, id]);
 
-    res.status(200).json({
+    return res.status(200).json({
         message: "Target updated successfully"
     });
    } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       message: "Internal server error"
     });
    }
@@ -152,12 +152,12 @@ exports.deleteTarget = async (req, res) => {
 
     await db.query(sql, [id]);
 
-    res.status(200).json({
+    return res.status(200).json({
       message: "Target deleted successfully"
       });
 
     } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       message: "error.message"
     });
    }

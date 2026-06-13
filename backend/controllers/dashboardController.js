@@ -52,7 +52,7 @@ exports.getDashboardStats = async (req, res) => {
 
     } catch (error) {
 
-        console.log(error);
+        console.error(error);
 
         return res.status(500).json({
             message: "Server Error"
@@ -74,7 +74,7 @@ exports.getRecentActivity = async (req, res) => {
 
     } catch (error) {
 
-        console.log(error);
+        console.error(error);
 
         return res.status(500).json({
             message: "Server Error"
@@ -158,7 +158,7 @@ const view =req.query.view || "month";
       targetData[0].target) * 100).toFixed(2)
       : 0;
 
-      res.status(200).json({
+      return res.status(200).json({
 
          view,
 
@@ -172,7 +172,7 @@ const view =req.query.view || "month";
       });
 
    } catch(error){
-      console.log(error);
+      console.error(error);
       res.status(500).json({
          message:"Server Error"
       });
@@ -197,7 +197,7 @@ exports.getBarChart = async (req, res) => {
         return res.status(200).json(data);
 
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return res.status(500).json({
             message: "Server Error"
         });
@@ -225,7 +225,7 @@ exports.getProductContribution = async (req, res) => {
 
     } catch (error) {
 
-        console.log(error);
+        console.error(error);
 
         return res.status(500).json({
             message: "Server Error"
@@ -252,7 +252,7 @@ exports.getTrend = async (req, res) => {
 
     } catch (error) {
 
-        console.log(error);
+        console.error(error);
 
         return res.status(500).json({
             message: "Server Error"
@@ -281,7 +281,7 @@ exports.getTopPerformers = async (req, res) => {
 
     } catch (error) {
 
-        console.log(error);
+        console.error(error);
 
         return res.status(500).json({
             message: "Server Error"
@@ -310,7 +310,7 @@ exports.getBottomPerformers = async (req, res) => {
 
     } catch (error) {
 
-        console.log(error);
+        console.error(error);
 
         return res.status(500).json({
             message: "Server Error"
