@@ -76,6 +76,7 @@ const exportPDF = () => {
   );
 
   autoTable(doc, {
+    startY: 25,
 
     head: [[
       "Sales Person",
