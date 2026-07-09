@@ -52,5 +52,5 @@ jobs:
         with:
           app-name: 'mis-sales-tracking-backend-akashi'
           slot-name: 'Production'
-          package: backend
+          package: .
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_70FA6EDE35CE4338887FAC060FA59F03 }}
