@@ -35,13 +35,40 @@ function Dashboard() {
   const [view, setView] = useState("month");
 
   useEffect(() => {
-  Promise.all([
-    axios.get ("https://mis-sales-tracking-backend-akashi-edevc7gkfkducede.centralindia-01.azurewebsites.net`/api/dashboard/kpi?view=${view}"),
-    axios.get("https://mis-sales-tracking-backend-akashi-edevc7gkfkducede.centralindia-01.azurewebsites.net/api/dashboard/product-contribution"),
-    axios.get("https://mis-sales-tracking-backend-akashi-edevc7gkfkducede.centralindia-01.azurewebsites.net/api/dashboard/trend"),
-    axios.get("https://mis-sales-tracking-backend-akashi-edevc7gkfkducede.centralindia-01.azurewebsites.net/dashboard/top-performers"),
-    axios.get("https://mis-sales-tracking-backend-akashi-edevc7gkfkducede.centralindia-01.azurewebsites.net/api/dashboard/bottom-performers"),
-  ])
+    const token = localStorage.getItem("token");
+
+const config = {
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+};
+Promise.all([
+  axios.get(
+    `https://mis-sales-tracking-backend-akashi-edevc7gkfkducede.centralindia-01.azurewebsites.net/api/dashboard/kpi?view=${view}`,
+    config
+  ),
+
+  axios.get(
+    "https://mis-sales-tracking-backend-akashi-edevc7gkfkducede.centralindia-01.azurewebsites.net/api/dashboard/product-contribution",
+    config
+  ),
+
+  axios.get(
+    "https://mis-sales-tracking-backend-akashi-edevc7gkfkducede.centralindia-01.azurewebsites.net/api/dashboard/trend",
+    config
+  ),
+
+  axios.get(
+    "https://mis-sales-tracking-backend-akashi-edevc7gkfkducede.centralindia-01.azurewebsites.net/api/dashboard/top-performers",
+    config
+  ),
+
+  axios.get(
+    "https://mis-sales-tracking-backend-akashi-edevc7gkfkducede.centralindia-01.azurewebsites.net/api/dashboard/bottom-performers",
+    config
+  ),
+])
+
     .then(([kpiRes, productRes, trendRes, topRes, bottomRes]) => {
       setKpi(kpiRes.data);
       setProductData(productRes.data);

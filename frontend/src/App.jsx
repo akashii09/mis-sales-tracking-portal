@@ -1,30 +1,57 @@
-/*import Dashboard from "./pages/Dashboard";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 
-function App() {
-  return <Dashboard />;
-}
+import Login from "./pages/login";
 
-export default App;
-
-import Reports from "./pages/Reports";
-
-function App() {
-  return <Reports />;
-}
-
-export default App;
-*/
-
+import Dashboard from "./pages/Dashboard";
 import Reports from "./pages/Reports";
 import VarianceReport from "./pages/VarianceReport";
 
+import ProtectedRoute from "./components/ProtectedRoute";
+
 function App() {
   return (
-    <>
-      <Reports />
-      <hr />
-      <VarianceReport />
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Login />} />
+
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/reports"
+          element={
+            <ProtectedRoute>
+              <Reports />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/variance"
+          element={
+            <ProtectedRoute>
+              <VarianceReport />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="*"
+          element={<Navigate to="/" />}
+        />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

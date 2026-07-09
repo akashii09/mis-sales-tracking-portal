@@ -88,23 +88,34 @@ const view =req.query.view || "month";
       let achievementQuery = "";
       let targetQuery = "";
       if(view === "day"){
+      achievementQuery = `
+       SELECT IFNULL(SUM(AchQty),0) AS achievement
+       FROM tbl_Achievement
+       WHERE MONTH(SaleDate)=(
+       SELECT MONTH(MAX(SaleDate))
+       FROM tbl_Achievement
+       )
+       AND YEAR(SaleDate)=(
+       SELECT YEAR(MAX(SaleDate))
+       FROM tbl_Achievement
+)
+       AND IsActive = TRUE
+`;
 
-        achievementQuery = `
-        SELECT IFNULL(SUM(AchQty),0)
-        AS achievement
-        FROM tbl_Achievement
-        WHERE SaleDate = CURDATE()
-        AND IsActive = TRUE
-        `;
-
-        targetQuery = `
-        SELECT IFNULL(SUM(TargetQty),0)
-        AS target
-        FROM tbl_Target
-        WHERE MONTH(MonthYear)=MONTH(CURDATE())
-        AND YEAR(MonthYear)=YEAR(CURDATE())
-        AND IsActive = TRUE
-        `;
+       targetQuery = `
+       SELECT IFNULL(SUM(TargetQty),0) AS target
+       FROM tbl_Target
+       WHERE MONTH(MonthYear)=(
+       SELECT MONTH(MAX(SaleDate))
+       FROM tbl_Achievement
+       )
+       AND YEAR(MonthYear)=(
+       SELECT YEAR(MAX(SaleDate))
+       FROM tbl_Achievement
+       )
+       AND IsActive = TRUE
+`;
+        
     }
      if(view === "week"){
 
