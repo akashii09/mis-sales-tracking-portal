@@ -36,11 +36,11 @@ function Dashboard() {
 
   useEffect(() => {
   Promise.all([
-    axios.get(`http://localhost:4000/api/dashboard/kpi?view=${view}`),
-    axios.get("http://localhost:4000/api/dashboard/product-contribution"),
-    axios.get("http://localhost:4000/api/dashboard/trend"),
-    axios.get("http://localhost:4000/api/dashboard/top-performers"),
-    axios.get("http://localhost:4000/api/dashboard/bottom-performers"),
+    axios.get ("https://mis-sales-tracking-backend-akashi-edevc7gkfkducede.centralindia-01.azurewebsites.net`/api/dashboard/kpi?view=${view}"),
+    axios.get("https://mis-sales-tracking-backend-akashi-edevc7gkfkducede.centralindia-01.azurewebsites.net/api/dashboard/product-contribution"),
+    axios.get("https://mis-sales-tracking-backend-akashi-edevc7gkfkducede.centralindia-01.azurewebsites.net/api/dashboard/trend"),
+    axios.get("https://mis-sales-tracking-backend-akashi-edevc7gkfkducede.centralindia-01.azurewebsites.net/dashboard/top-performers"),
+    axios.get("https://mis-sales-tracking-backend-akashi-edevc7gkfkducede.centralindia-01.azurewebsites.net/api/dashboard/bottom-performers"),
   ])
     .then(([kpiRes, productRes, trendRes, topRes, bottomRes]) => {
       setKpi(kpiRes.data);

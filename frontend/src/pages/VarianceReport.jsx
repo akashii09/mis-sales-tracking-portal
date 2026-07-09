@@ -8,7 +8,7 @@ function VarianceReport() {
   useEffect(() => {
 
     axios
-      .get("http://localhost:4000/api/reports/variance-report")
+      .get("https://mis-sales-tracking-backend-akashi-edevc7gkfkducede.centralindia-01.azurewebsites.net/api/reports/variance-report")
       .then((res) => {
         setData(res.data);
       })

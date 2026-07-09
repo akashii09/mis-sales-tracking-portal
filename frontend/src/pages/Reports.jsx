@@ -13,7 +13,7 @@ function Reports() {
   useEffect(() => {
 
     axios
-      .get("http://localhost:4000/api/reports/achievement-report", {
+      .get("https://mis-sales-tracking-backend-akashi-edevc7gkfkducede.centralindia-01.azurewebsites.net/api/reports/achievement-report", {
         headers: {
           Authorization:
             `Bearer ${localStorage.getItem("token")}`
