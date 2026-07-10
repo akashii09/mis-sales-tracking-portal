@@ -25,10 +25,13 @@ function Login() {
         email: email.trim(),
         password,
       });
-
+       
       localStorage.setItem("token", res.data.token);
+      localStorage.setItem("role", res.data.role);
+      localStorage.setItem("username", res.data.username);
 
       navigate("/dashboard");
+      
     } catch (err) {
       alert(err.response?.data?.message || "Login Failed");
     } finally {
@@ -93,7 +96,19 @@ function Login() {
               }
             />
           </div>
+           <div className="text-end mt-2">
 
+<button
+type="button"
+className="btn btn-link p-0"
+onClick={()=>navigate("/forgot-password")}
+>
+
+Forgot Password?
+
+</button>
+
+</div>
           <button
             className="btn btn-primary w-100 py-2 fw-semibold"
             disabled={loading}

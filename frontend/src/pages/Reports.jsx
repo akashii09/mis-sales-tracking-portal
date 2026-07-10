@@ -3,6 +3,8 @@ import API from "../services/api";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 
+import { Link } from "react-router-dom";
+
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 
@@ -101,10 +103,26 @@ const exportPDF = () => {
     <div>
 
       <h1> Achievement Report</h1>
-      <button onClick={exportExcel}>Export Excel</button>
+      <div className="mb-3">
+
+  <Link
+    to="/dashboard"
+    className="btn btn-primary me-2"
+  >
+    Dashboard
+  </Link>
+
+</div>
+      <button 
+      className="btn btn-success me-2"
+       onClick={exportExcel}>
+        Export Excel
+        </button>
+
       <button
-  onClick={exportPDF}
-  style={{ marginLeft: "10px",
+      className="btn btn-success me-2"
+      onClick={exportPDF}
+      style={{ marginLeft: "10px",
     backgroundColor: "#dc3545"
    }}
   

@@ -255,31 +255,51 @@ exports.getProductContribution = async (req, res) => {
     }
 };
 //LINE CHART
-exports.getTrend = async (req, res) => {
+exports.getTrend = async (req,res)=>{
 
-    try {
+try{
 
-        const [data] = await db.query(`
-            SELECT
-                DATE(SaleDate) AS saleDate,
-                SUM(AchQty) AS totalSales
-            FROM tbl_Achievement
-            WHERE IsActive = TRUE
-            GROUP BY DATE(SaleDate)
-            ORDER BY saleDate
-        `);
+const [data]=await db.query(`
 
-        return res.status(200).json(data);
+SELECT
+DATE(SaleDate) AS saleDate,
+SUM(AchQty) AS totalSales
 
-    } catch (error) {
+FROM tbl_Achievement
 
-        console.error(error);
+WHERE
+IsActive=TRUE
 
-        return res.status(500).json({
-            message: "Server Error"
-        });
-    }
-};
+AND MONTH(SaleDate)=(
+SELECT MONTH(MAX(SaleDate))
+FROM tbl_Achievement
+)
+
+AND YEAR(SaleDate)=(
+SELECT YEAR(MAX(SaleDate))
+FROM tbl_Achievement
+)
+
+GROUP BY DATE(SaleDate)
+
+ORDER BY saleDate;
+
+`);
+
+return res.json(data);
+
+}
+catch(err){
+
+console.log(err);
+
+res.status(500).json({
+message:"Server Error"
+});
+
+}
+
+}
 //TOP PERFORMERS
 exports.getTopPerformers = async (req, res) => {
 

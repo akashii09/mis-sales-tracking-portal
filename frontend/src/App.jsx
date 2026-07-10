@@ -6,12 +6,15 @@ import {
 } from "react-router-dom";
 
 import Login from "./pages/login";
+import RoleProtectedRoute from "./components/RoleProtectedRoute";
 
 import Dashboard from "./pages/Dashboard";
 import Reports from "./pages/Reports";
 import VarianceReport from "./pages/VarianceReport";
 
 import ProtectedRoute from "./components/ProtectedRoute";
+import ForgotPassword from "./pages/forgotPassword";
+import ResetPassword from "./pages/resetPassword";
 
 function App() {
   return (
@@ -32,8 +35,11 @@ function App() {
           path="/reports"
           element={
             <ProtectedRoute>
-              <Reports />
-            </ProtectedRoute>
+              <RoleProtectedRoute
+                 allowedRoles={["Admin","Manager","Sales Executive", "Viewer"]}>
+                  <Reports />
+                  </RoleProtectedRoute>
+                  </ProtectedRoute>
           }
         />
 
@@ -41,10 +47,25 @@ function App() {
           path="/variance"
           element={
             <ProtectedRoute>
+              <RoleProtectedRoute
+                  allowedRoles={["Admin"]}
+              >
               <VarianceReport />
+              </RoleProtectedRoute>
             </ProtectedRoute>
           }
         />
+          <Route 
+          path="/forgot-password"
+          element={
+          <ForgotPassword />}
+        />
+
+           <Route
+            path="/reset-password" 
+            element={
+            <ResetPassword/>}
+            />
 
         <Route
           path="*"
@@ -52,7 +73,7 @@ function App() {
         />
       </Routes>
     </BrowserRouter>
-  );
-}
+  )
+  }
 
 export default App;

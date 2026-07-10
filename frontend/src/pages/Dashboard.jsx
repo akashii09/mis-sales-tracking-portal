@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import API from "../services/api";
 
 import { Pie, Line } from "react-chartjs-2";
@@ -33,6 +34,14 @@ function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [view, setView] = useState("month");
+  const navigate = useNavigate();
+
+  const role = localStorage.getItem("role");
+
+  const logout = () => {
+   localStorage.clear();
+   navigate("/");
+};
 
   useEffect(() => {
   Promise.all([
@@ -70,7 +79,22 @@ function Dashboard() {
         data: productData.map((item) =>
           Number(item.totalSales)
         ),
-      },
+      backgroundColor: [
+        "#0d6efd",
+        "#198754",
+        "#ffc107",
+        "#dc3545",
+        "#6f42c1",
+        "#20c997",
+        "#fd7e14",
+        "#6610f2",
+        "#198754",
+        "#0dcaf0",
+      ],
+
+      borderColor: "#ffffff",
+      borderWidth: 2,
+    },
     ],
   };
 
@@ -117,7 +141,41 @@ return (
     <h2 className="text-center text-primary fw-bold mb-4">
       📊 MIS Sales Tracking Dashboard
     </h2>
-    
+    <div className="d-flex justify-content-center flex-wrap gap-2 mb-4">
+
+  <Link
+    to="/dashboard"
+    className="btn btn-primary"
+  >
+    Dashboard
+  </Link>
+
+  {(role === "Admin" || role === "Manager") && (
+    <Link
+      to="/reports"
+      className="btn btn-success"
+    >
+      Achievement Report
+    </Link>
+  )}
+
+  {role === "Admin" && (
+    <Link
+      to="/variance"
+      className="btn btn-warning"
+    >
+      Variance Report
+    </Link>
+  )}
+
+  <button
+    className="btn btn-danger"
+    onClick={logout}
+  >
+    Logout
+  </button>
+
+</div>
 
     <div className="text-center mb-4">
       <button
@@ -212,7 +270,15 @@ return (
           margin:"auto",
          }}
          >
-        <Pie data={pieData} />
+        <Pie 
+           data={pieData}
+           options={{
+              plugins: {
+                 legend: {
+                    position: "bottom",
+            },
+        },
+    }} />
       </div>
 
     </div>

@@ -4,6 +4,7 @@ import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import { Link } from "react-router-dom";
 
 function VarianceReport() {
 
@@ -76,12 +77,24 @@ function VarianceReport() {
     <div>
 
       <h1>Variance Report</h1>
+      <div className="mb-3">
 
-      <button onClick={exportExcel}>
+  <Link
+    to="/dashboard"
+    className="btn btn-primary me-2"
+  >
+    Dashboard
+  </Link>
+
+</div>
+      <button 
+        className="btn btn-success me-2"
+        onClick={exportExcel}>
         Export Excel
       </button>
 
       <button
+        className="btn btn-success me-2"
         onClick={exportPDF}
         style={{ marginLeft: "10px" ,
           backgroundColor: "#dc3545"
