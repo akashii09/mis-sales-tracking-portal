@@ -35,14 +35,7 @@ function Dashboard() {
   const [view, setView] = useState("month");
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-
-const config = {
-  headers: {
-    Authorization: `Bearer ${token}`,
-  },
-};
-Promise.all([
+  Promise.all([
   API.get(
     `http://localhost:4000/api/dashboard/kpi?view=${view}`,
     
