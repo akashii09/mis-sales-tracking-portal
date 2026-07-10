@@ -89,18 +89,35 @@ function Dashboard() {
     ],
   };
 if (loading) {
-  return <div className="loading">Loading Dashboard...</div>;
+  return(
+     <div className="text-center mt-5">
+       <div 
+       className="spinner-border text-primary"
+       role="status"
+      > 
+      <span className="visually-hidden">
+    Loading...
+    </span>
+    </div>
+
+
+ <p className="mt-3"> Loading Dashboard...</p>
+</div>
+);
 }
 if (error) {
-  return <div className="alert alert-danger mt-5">{error}</div>;
+  return(
+     <div className="alert alert-danger mt-5">{error}</div>
+  );
 }
 
 return (
   <div className="container py-4">
 
-    <h1 className="text-center text-primary fw-bold mb-4">
+    <h2 className="text-center text-primary fw-bold mb-4">
       📊 MIS Sales Tracking Dashboard
-    </h1>
+    </h2>
+    
 
     <div className="text-center mb-4">
       <button
@@ -137,7 +154,10 @@ return (
         <div className="card shadow text-center h-100">
           <div className="card-body">
             <h6 className="text-muted">Achievement</h6>
-            <h3>{kpi.achievement}</h3>
+              
+            <h2 className= "fw-bold text-dark">
+               {Number(kpi.achievement || 0).toLocaleString()}
+            </h2>
           </div>
         </div>
       </div>
@@ -146,7 +166,11 @@ return (
         <div className="card shadow text-center h-100">
           <div className="card-body">
             <h6 className="text-muted">Target</h6>
-            <h3>{kpi.target}</h3>
+
+            <h2 className="fw-bold text-dark">
+              {Number(kpi.target|| 0).toLocaleString()}
+
+            </h2>
           </div>
         </div>
       </div>
@@ -155,7 +179,11 @@ return (
         <div className="card shadow text-center h-100">
           <div className="card-body">
             <h6 className="text-muted">Achievement %</h6>
-            <h3>{kpi.achievementPercent}%</h3>
+            <h2 className="fw-bold text-dark">
+  {kpi.target > 0
+    ? `${Number(kpi.achievementPercent).toFixed(2)}%`
+    : "N/A"}
+</h2>
           </div>
         </div>
       </div>
@@ -173,11 +201,21 @@ return (
 
     <div className="card shadow mb-4">
       <div className="card-body">
+
         <h4 className="text-center mb-3">
           Product Contribution
         </h4>
+
+        <div
+         style={{
+          maxWidth:"450px",
+          margin:"auto",
+         }}
+         >
         <Pie data={pieData} />
       </div>
+
+    </div>
     </div>
 
     <div className="card shadow mb-4">
@@ -185,8 +223,16 @@ return (
         <h4 className="text-center mb-3">
           Sales Trend
         </h4>
+        <div
+          style={{
+            maxWidth: "450px",
+            margin: "auto",
+          }}
+          >
         <Line data={lineData} />
       </div>
+
+    </div>
     </div>
 
     <div className="card shadow mb-4">
