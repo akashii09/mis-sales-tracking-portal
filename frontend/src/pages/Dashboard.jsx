@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import API from "../services/api";
 
 import { Pie, Line } from "react-chartjs-2";
 
@@ -43,29 +43,29 @@ const config = {
   },
 };
 Promise.all([
-  axios.get(
+  API.get(
     `http://localhost:4000/api/dashboard/kpi?view=${view}`,
-    config
+    
   ),
 
-  axios.get(
+  API.get(
     "http://localhost:4000/api/dashboard/product-contribution",
-    config
+    
   ),
 
-  axios.get(
+  API.get(
     "http://localhost:4000/api/dashboard/trend",
-    config
+    
   ),
 
-  axios.get(
+  API.get(
     "http://localhost:4000/api/dashboard/top-performers",
-    config
+    
   ),
 
-  axios.get(
+  API.get(
     "http://localhost:4000/api/dashboard/bottom-performers",
-    config
+  
   ),
 ])
 
