@@ -91,129 +91,163 @@ function Dashboard() {
 if (loading) {
   return <div className="loading">Loading Dashboard...</div>;
 }
-
 if (error) {
-  return <div className="error">{error}</div>;
+  return <div className="alert alert-danger mt-5">{error}</div>;
 }
-  return (
-    <div>
-      <h1>MIS Dashboard</h1><div style={{ marginBottom: "20px" }}>
+
+return (
+  <div className="container py-4">
+
+    <h1 className="text-center text-primary fw-bold mb-4">
+      📊 MIS Sales Tracking Dashboard
+    </h1>
+
+    <div className="text-center mb-4">
+      <button
+        className={`btn ${
+          view === "day" ? "btn-primary" : "btn-outline-primary"
+        }`}
+        onClick={() => setView("day")}
+      >
+        Day
+      </button>
 
       <button
-onClick={() => setView("day")}
->
-Day
-</button>
+        className={`btn ms-2 ${
+          view === "week" ? "btn-primary" : "btn-outline-primary"
+        }`}
+        onClick={() => setView("week")}
+      >
+        Week
+      </button>
 
-<button
-onClick={() => setView("week")}
-style={{ marginLeft: "10px" }}
->
-Week
-</button>
+      <button
+        className={`btn ms-2 ${
+          view === "month" ? "btn-primary" : "btn-outline-primary"
+        }`}
+        onClick={() => setView("month")}
+      >
+        Month
+      </button>
+    </div>
 
-<button
-onClick={() => setView("month")}
-style={{ marginLeft: "10px" }}
->
-Month
-</button>
+    <div className="row g-4 mb-4">
 
-</div>
-      <hr />
+      <div className="col-md-3">
+        <div className="card shadow text-center h-100">
+          <div className="card-body">
+            <h6 className="text-muted">Achievement</h6>
+            <h3>{kpi.achievement}</h3>
+          </div>
+        </div>
+      </div>
 
-      <h2>KPI Summary</h2>
+      <div className="col-md-3">
+        <div className="card shadow text-center h-100">
+          <div className="card-body">
+            <h6 className="text-muted">Target</h6>
+            <h3>{kpi.target}</h3>
+          </div>
+        </div>
+      </div>
 
-      <div className="kpi-container">
+      <div className="col-md-3">
+        <div className="card shadow text-center h-100">
+          <div className="card-body">
+            <h6 className="text-muted">Achievement %</h6>
+            <h3>{kpi.achievementPercent}%</h3>
+          </div>
+        </div>
+      </div>
 
-  <div className="kpi-card">
-    <h3>{view.toUpperCase()} Achievement</h3>
-    <p>{kpi.achievement}</p>
-  </div>
+      <div className="col-md-3">
+        <div className="card shadow text-center h-100">
+          <div className="card-body">
+            <h6 className="text-muted">Current View</h6>
+            <h3>{view.toUpperCase()}</h3>
+          </div>
+        </div>
+      </div>
 
-  <div className="kpi-card">
-    <h3>Selected Achievement</h3>
-    <p>{kpi.achievement}</p>
-  </div>
+    </div>
 
-  <div className="kpi-card">
-    <h3>{view.toUpperCase()}  Target</h3>
-    <p>{kpi.target}</p>
-  </div>
-
-  <div className="kpi-card">
-    <h3>Achievement %</h3>
-    <p>{kpi.achievementPercent}%</p>
-  </div>
-
-</div>
-
-      <hr />
-
-      <h2>Product Contribution</h2>
-
-      <div className="chart-container">
+    <div className="card shadow mb-4">
+      <div className="card-body">
+        <h4 className="text-center mb-3">
+          Product Contribution
+        </h4>
         <Pie data={pieData} />
       </div>
+    </div>
 
-      <hr />
-
-      <h2>Sales Trend</h2>
-
-      <div className="chart-container">
+    <div className="card shadow mb-4">
+      <div className="card-body">
+        <h4 className="text-center mb-3">
+          Sales Trend
+        </h4>
         <Line data={lineData} />
       </div>
-
-      <hr />
-
-      <h2>Top Performers</h2>
-{topPerformers.length === 0 && (
-  <p>No Data Available</p>
-)}
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Total Sales</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {topPerformers.map((person, index) => (
-            <tr key={index}>
-              <td>{person.Name}</td>
-              <td>{person.totalSales}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      <hr />
-
-      <h2>Bottom Performers</h2>
-{bottomPerformers.length === 0 && (
-  <p>No Data Available</p>
-)}
-      <table border="1" cellPadding="10">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Total Sales</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {bottomPerformers.map((person, index) => (
-            <tr key={index}>
-              <td>{person.Name}</td>
-              <td>{person.totalSales}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
     </div>
-  );
-}
 
+    <div className="card shadow mb-4">
+      <div className="card-body">
+        <h4>Top Performers</h4>
+
+        {topPerformers.length === 0 ? (
+          <p>No Data Available</p>
+        ) : (
+          <table className="table table-striped table-hover">
+            <thead className="table-primary">
+              <tr>
+                <th>Name</th>
+                <th>Total Sales</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {topPerformers.map((person, index) => (
+                <tr key={index}>
+                  <td>{person.Name}</td>
+                  <td>{person.totalSales}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
+    </div>
+
+    <div className="card shadow">
+      <div className="card-body">
+        <h4>Bottom Performers</h4>
+
+        {bottomPerformers.length === 0 ? (
+          <p>No Data Available</p>
+        ) : (
+          <table className="table table-striped table-hover">
+            <thead className="table-danger">
+              <tr>
+                <th>Name</th>
+                <th>Total Sales</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {bottomPerformers.map((person, index) => (
+                <tr key={index}>
+                  <td>{person.Name}</td>
+                  <td>{person.totalSales}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
+    </div>
+
+  </div>
+);
+
+}
 
 export default Dashboard;

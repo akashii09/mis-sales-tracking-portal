@@ -100,11 +100,14 @@ const exportPDF = () => {
   return (
     <div>
 
-      <h1>Reports</h1>
+      <h1> Achievement Report</h1>
       <button onClick={exportExcel}>Export Excel</button>
       <button
   onClick={exportPDF}
-  style={{ marginLeft: "10px" }}
+  style={{ marginLeft: "10px",
+    backgroundColor: "#dc3545"
+   }}
+  
 >
   Export PDF
       </button>   

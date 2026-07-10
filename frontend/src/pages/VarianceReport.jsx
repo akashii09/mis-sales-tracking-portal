@@ -83,7 +83,9 @@ function VarianceReport() {
 
       <button
         onClick={exportPDF}
-        style={{ marginLeft: "10px" }}
+        style={{ marginLeft: "10px" ,
+          backgroundColor: "#dc3545"
+        }}
       >
         Export PDF
       </button>
