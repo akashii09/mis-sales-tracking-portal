@@ -85,7 +85,7 @@ function Login() {
               disabled={loading}
               className="form-control py-2"
               placeholder="Enter your password"
-              autocomplete= "current-password"
+              autoComplete= "current-password"
               type="password"
               value={password}
               onChange={(e) =>
