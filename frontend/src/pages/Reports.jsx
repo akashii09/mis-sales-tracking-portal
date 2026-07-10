@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import API from "../services/api";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 
@@ -12,13 +12,7 @@ function Reports() {
   console.log("REPORT DATA =", data);
   useEffect(() => {
 
-    axios
-      .get("https://mis-sales-tracking-backend-akashi-edevc7gkfkducede.centralindia-01.azurewebsites.net/api/reports/achievement-report", {
-        headers: {
-          Authorization:
-            `Bearer ${localStorage.getItem("token")}`
-        }
-      })
+    API.get("/reports/achievement-report")
       .then((res) => {
         setData(res.data);
       })
