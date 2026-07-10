@@ -22,7 +22,7 @@ function Login() {
       setLoading(true);
 
       const res = await API.post("/auth/login", {
-        email,
+        email: email.trim(),
         password,
       });
 
@@ -39,22 +39,37 @@ function Login() {
   return (
     <div
       className="container d-flex justify-content-center align-items-center"
-      style={{ height: "100vh" }}
+      style={{ 
+        minHeight: "100vh" ,
+        background: "#f5f7fb",
+        padding: "20px",
+      }}
     >
       <div
-        className="card shadow p-4"
-        style={{ width: "400px" }}
+        className="card border-0 shadow p-4"
+        style={{ 
+          width: "400px" ,
+          borderRadius: "15px",
+        }}
       >
-        <h2 className="text-center mb-4">
+        <h2 className="text-center mb-2">
           MIS Sales Tracking Portal
         </h2>
+        <p
+           className="text-center text-muted mb-4"
+           style={{ fontsize: "14px"}}
+           > Login to continue
+           </p>
 
         <form onSubmit={login}>
           <div className="mb-3">
             <label>Email</label>
 
             <input
-              className="form-control"
+              disabled={loading}
+              className="form-control py-2"
+              placeholder= "Enter your email"
+              autoComplete= "email"
               type="email"
               value={email}
               onChange={(e) =>
@@ -67,7 +82,10 @@ function Login() {
             <label>Password</label>
 
             <input
-              className="form-control"
+              disabled={loading}
+              className="form-control py-2"
+              placeholder="Enter your password"
+              autocomplete= "current-password"
               type="password"
               value={password}
               onChange={(e) =>
@@ -77,7 +95,7 @@ function Login() {
           </div>
 
           <button
-            className="btn btn-primary w-100"
+            className="btn btn-primary w-100 py-2 fw-semibold"
             disabled={loading}
           >
             {loading ? "Logging in..." : "Login"}
