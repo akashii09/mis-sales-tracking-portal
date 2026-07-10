@@ -44,27 +44,27 @@ const config = {
 };
 Promise.all([
   axios.get(
-    `https://mis-sales-tracking-backend-akashi-edevc7gkfkducede.centralindia-01.azurewebsites.net/api/dashboard/kpi?view=${view}`,
+    `http://localhost:4000/api/dashboard/kpi?view=${view}`,
     config
   ),
 
   axios.get(
-    "https://mis-sales-tracking-backend-akashi-edevc7gkfkducede.centralindia-01.azurewebsites.net/api/dashboard/product-contribution",
+    "http://localhost:4000/api/dashboard/product-contribution",
     config
   ),
 
   axios.get(
-    "https://mis-sales-tracking-backend-akashi-edevc7gkfkducede.centralindia-01.azurewebsites.net/api/dashboard/trend",
+    "http://localhost:4000/api/dashboard/trend",
     config
   ),
 
   axios.get(
-    "https://mis-sales-tracking-backend-akashi-edevc7gkfkducede.centralindia-01.azurewebsites.net/api/dashboard/top-performers",
+    "http://localhost:4000/api/dashboard/top-performers",
     config
   ),
 
   axios.get(
-    "https://mis-sales-tracking-backend-akashi-edevc7gkfkducede.centralindia-01.azurewebsites.net/api/dashboard/bottom-performers",
+    "http://localhost:4000/api/dashboard/bottom-performers",
     config
   ),
 ])
