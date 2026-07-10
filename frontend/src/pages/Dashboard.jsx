@@ -36,30 +36,15 @@ function Dashboard() {
 
   useEffect(() => {
   Promise.all([
-  API.get(
-    `http://localhost:4000/api/dashboard/kpi?view=${view}`,
-    
-  ),
+  API.get(`/dashboard/kpi?view=${view}`),
 
-  API.get(
-    "http://localhost:4000/api/dashboard/product-contribution",
-    
-  ),
+  API.get("/dashboard/product-contribution"),
 
-  API.get(
-    "http://localhost:4000/api/dashboard/trend",
-    
-  ),
+  API.get("/dashboard/trend"),
 
-  API.get(
-    "http://localhost:4000/api/dashboard/top-performers",
-    
-  ),
+  API.get("/dashboard/top-performers"),
 
-  API.get(
-    "http://localhost:4000/api/dashboard/bottom-performers",
-  
-  ),
+  API.get("/dashboard/bottom-performers"),
 ])
 
     .then(([kpiRes, productRes, trendRes, topRes, bottomRes]) => {
