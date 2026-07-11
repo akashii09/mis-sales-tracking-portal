@@ -30,9 +30,25 @@ function Login() {
       localStorage.setItem("role", res.data.role);
       localStorage.setItem("username", res.data.username);
 
-      navigate("/dashboard");
-      
-    } catch (err) {
+      const role = res.data.role;
+
+      if (role === "Admin") {
+        navigate("/dashboard");
+      }
+      else if (role === "Manager") {
+        navigate("/manager-dashboard");
+      }
+      else if (role === "Sales Executive") {
+        navigate("/sales-dashboard");
+      }
+      else if (role === "Viewer") {
+        navigate("/viewer-dashboard");
+      }
+      else {
+        navigate("/");
+      }
+    }
+        catch (err) {
       alert(err.response?.data?.message || "Login Failed");
     } finally {
       setLoading(false);
@@ -60,7 +76,7 @@ function Login() {
         </h2>
         <p
            className="text-center text-muted mb-4"
-           style={{ fontsize: "14px"}}
+           style={{ fontSize: "14px"}}
            > Login to continue
            </p>
 
@@ -110,6 +126,7 @@ Forgot Password?
 
 </div>
           <button
+            type="submit"
             className="btn btn-primary w-100 py-2 fw-semibold"
             disabled={loading}
           >

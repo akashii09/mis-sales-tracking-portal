@@ -7,10 +7,15 @@ import {
 
 import Login from "./pages/login";
 import RoleProtectedRoute from "./components/RoleProtectedRoute";
+import SessionTimeout from "./components/SessionTimeout";
 
 import Dashboard from "./pages/Dashboard";
 import Reports from "./pages/Reports";
 import VarianceReport from "./pages/VarianceReport";
+
+import ManagerDashboard from "./pages/ManagerDashboard";
+import SalesDashboard from "./pages/SalesDashboard";
+import ViewerDashboard from "./pages/ViewerDashboard";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import ForgotPassword from "./pages/forgotPassword";
@@ -19,6 +24,7 @@ import ResetPassword from "./pages/resetPassword";
 function App() {
   return (
     <BrowserRouter>
+      <SessionTimeout />
       <Routes>
         <Route path="/" element={<Login />} />
 
@@ -26,7 +32,9 @@ function App() {
           path="/dashboard"
           element={
             <ProtectedRoute>
-              <Dashboard />
+            <RoleProtectedRoute allowedRoles={["Admin"]}>
+            <Dashboard />
+            </RoleProtectedRoute>
             </ProtectedRoute>
           }
         />
@@ -71,9 +79,42 @@ function App() {
           path="*"
           element={<Navigate to="/" />}
         />
+
+        <Route
+          path="/manager-dashboard"
+          element={
+          <ProtectedRoute>
+          <RoleProtectedRoute allowedRoles={["Manager"]}>
+          <ManagerDashboard/>
+          </RoleProtectedRoute>
+          </ProtectedRoute>
+          }
+        />
+
+<Route
+path="/sales-dashboard"
+element={
+<ProtectedRoute>
+<RoleProtectedRoute allowedRoles={["Sales Executive"]}>
+<SalesDashboard/>
+</RoleProtectedRoute>
+</ProtectedRoute>
+}
+/>
+
+<Route
+path="/viewer-dashboard"
+element={
+<ProtectedRoute>
+<RoleProtectedRoute allowedRoles={["Viewer"]}>
+<ViewerDashboard/>
+</RoleProtectedRoute>
+</ProtectedRoute>
+}
+/>
       </Routes>
     </BrowserRouter>
-  )
-  }
+);
+}
 
 export default App;
