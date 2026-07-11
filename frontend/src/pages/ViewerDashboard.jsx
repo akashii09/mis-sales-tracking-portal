@@ -1,5 +1,7 @@
+import Dashboard from "./Dashboard";
+
 function ViewerDashboard() {
-  return <h2>Viewer Dashboard</h2>;
+  return <Dashboard />;
 }
 
 export default ViewerDashboard;

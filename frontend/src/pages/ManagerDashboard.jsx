@@ -1,5 +1,7 @@
+import Dashboard from "./Dashboard";
+
 function ManagerDashboard() {
-  return <h2>Manager Dashboard</h2>;
+  return <Dashboard />;
 }
 
 export default ManagerDashboard;

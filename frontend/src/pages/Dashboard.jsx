@@ -144,13 +144,17 @@ return (
     </h2>
     <div className="d-flex justify-content-center flex-wrap gap-2 mb-4">
 
-  <Link
-    to="/dashboard"
-    className="btn btn-primary"
-  >
-    Dashboard
-  </Link>
-  <Link to="/users" className="btn btn-dark">
+  
+      <Link
+  to="/dashboard"
+  className="btn btn-primary"
+>
+  Dashboard
+</Link>
+
+{role === "Admin" && (
+  <>
+    <Link to="/users" className="btn btn-dark">
       Users
     </Link>
 
@@ -165,52 +169,46 @@ return (
     <Link to="/regions" className="btn btn-success">
       Regions
     </Link>
-
-    <Link to="/achievement" className="btn btn-info">
-    Achievement
-    </Link>
-    
-  {(role === "Admin" || role === "Manager") && (
-    <Link
-      to="/reports"
-      className="btn btn-success"
-    >
-      Achievement Report
-    </Link>
-  )}
-
-  {role === "Admin" && (
-    <Link
-      to="/variance"
-      className="btn btn-warning"
-    >
-      Variance Report
-    </Link>
-  )}
-
-  <button
-    className="btn btn-danger"
-    onClick={logout}
-  >
-    Logout
-  </button>
-{role === "Admin" && (
-  <>
-    
-
-     <div className="card shadow mt-4">
-  <div className="card-body text-center">
-    <h5 className="mb-3">Target vs Achievement</h5>
-
-    <Link to="/compare" className="btn btn-success">
-      View Report
-    </Link>
-  </div>
-</div>
   </>
-    
 )}
-</div>
+
+{(role === "Admin" || role === "Manager" || role === "Sales Executive") && (
+  <Link to="/achievement" className="btn btn-info">
+    Achievement
+  </Link>
+)}
+
+{(role === "Admin" || role === "Manager") && (
+  <Link to="/reports" className="btn btn-success">
+    Achievement Report
+  </Link>
+)}
+
+{role === "Admin" && (
+  <Link to="/variance" className="btn btn-warning">
+    Variance Report
+  </Link>
+)}
+
+<button
+  className="btn btn-danger"
+  onClick={logout}
+>
+  Logout
+</button>
+
+{(role === "Admin" || role === "Manager") && (
+  <div className="card shadow mt-4">
+    <div className="card-body text-center">
+      <h5 className="mb-3">Target vs Achievement</h5>
+
+      <Link to="/compare" className="btn btn-success">
+        View Report
+      </Link>
+    </div>
+  </div>
+)}
+    </div>
 
     <div className="text-center mb-4">
       <button

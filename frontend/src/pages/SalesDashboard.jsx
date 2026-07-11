@@ -1,5 +1,7 @@
+import Dashboard from "./Dashboard";
+
 function SalesDashboard() {
-  return <h2>Sales Dashboard</h2>;
+  return <Dashboard />;
 }
 
 export default SalesDashboard;
