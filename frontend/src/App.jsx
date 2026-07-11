@@ -183,7 +183,7 @@ element={
     </ProtectedRoute>
   }
 />
-  <Route path="/compare" element={<Compare />} />
+ 
       </Routes>
     </BrowserRouter>
 );

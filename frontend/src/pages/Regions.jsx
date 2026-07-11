@@ -52,8 +52,11 @@ function Regions() {
       fetchRegions();
 
     } catch (err) {
-      alert(err.response?.data?.message || "Operation Failed");
-    }
+  console.log("Region Error:", err);
+  console.log("Status:", err.response?.status);
+  console.log("Data:", err.response?.data);
+  alert("Failed to load Regions");
+}
   };
 
   const editRegion = (r) => {
