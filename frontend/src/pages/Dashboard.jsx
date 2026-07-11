@@ -4,6 +4,7 @@ import API from "../services/api";
 
 import { Pie, Line } from "react-chartjs-2";
 
+
 import {
   Chart as ChartJS,
   ArcElement,
@@ -149,7 +150,26 @@ return (
   >
     Dashboard
   </Link>
+  <Link to="/users" className="btn btn-dark">
+      Users
+    </Link>
 
+    <Link to="/products" className="btn btn-secondary">
+      Products
+    </Link>
+
+    <Link to="/salesperson" className="btn btn-info">
+      Sales Persons
+    </Link>
+
+    <Link to="/regions" className="btn btn-success">
+      Regions
+    </Link>
+
+    <Link to="/achievement" className="btn btn-info">
+    Achievement
+    </Link>
+    
   {(role === "Admin" || role === "Manager") && (
     <Link
       to="/reports"
@@ -176,22 +196,19 @@ return (
   </button>
 {role === "Admin" && (
   <>
-    <Link to="/users" className="btn btn-dark">
-      Users
-    </Link>
+    
 
-    <Link to="/products" className="btn btn-secondary">
-      Products
-    </Link>
+     <div className="card shadow mt-4">
+  <div className="card-body text-center">
+    <h5 className="mb-3">Target vs Achievement</h5>
 
-    <Link to="/salesperson" className="btn btn-info">
-      Sales Persons
+    <Link to="/compare" className="btn btn-success">
+      View Report
     </Link>
-
-    <Link to="/regions" className="btn btn-success">
-      Regions
-    </Link>
+  </div>
+</div>
   </>
+    
 )}
 </div>
 

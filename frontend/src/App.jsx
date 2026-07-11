@@ -21,10 +21,12 @@ import Users from "./pages/Users";
 import Products from "./pages/Products";
 import SalesPersons from "./pages/SalesPerson";
 import Regions from "./pages/Regions";
-
+import Achievement from "./pages/Achievement";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ForgotPassword from "./pages/forgotPassword";
 import ResetPassword from "./pages/resetPassword";
+
+import Compare from "./pages/Compare";
 
 function App() {
   return (
@@ -159,9 +161,33 @@ element={
     </ProtectedRoute>
   }
 />
+  <Route
+  path="/achievement"
+  element={
+    <ProtectedRoute>
+      <RoleProtectedRoute
+        allowedRoles={["Admin","Manager","Sales Executive","Viewer"]}
+      >
+        <Achievement />
+      </RoleProtectedRoute>
+    </ProtectedRoute>
+  }
+/>
+  <Route
+  path="/compare"
+  element={
+    <ProtectedRoute>
+      <RoleProtectedRoute allowedRoles={["Admin","Manager"]}>
+        <Compare />
+      </RoleProtectedRoute>
+    </ProtectedRoute>
+  }
+/>
+  <Route path="/compare" element={<Compare />} />
       </Routes>
     </BrowserRouter>
 );
+
 }
 
 export default App;

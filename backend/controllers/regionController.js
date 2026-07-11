@@ -11,7 +11,7 @@ exports.addRegion = async (req, res) => {
         });
       }
       const checkSql = `
-      SELECT * FROM tbl_region
+      SELECT * FROM tbl_Region
       WHERE RegionName = ?
     `;
 
@@ -23,7 +23,7 @@ exports.addRegion = async (req, res) => {
       });
     }
     const sql = `
-      INSERT INTO tbl_region
+      INSERT INTO tbl_Region
       (RegionName, Zone, State, City)
       VALUES (?, ?, ?, ?)
     `;
@@ -46,7 +46,7 @@ exports.getRegions = async (req, res) => {
 
   try {
      const sql = `
-     SELECT * FROM tbl_region
+     SELECT * FROM tbl_Region
      WHERE IsActive = 1
     `;
      const [result] = await db.query(sql);
@@ -70,7 +70,7 @@ exports.updateRegion = async (req, res) => {
       });
      }
      const sql = `
-      UPDATE tbl_region
+      UPDATE tbl_Region
       SET RegionName=?, Zone=?, State=?, City=?
       WHERE RegionID=?
     `;
@@ -93,7 +93,7 @@ exports.deleteRegion = async (req, res) => {
    try {
      const { id } = req.params;
      const sql = `
-      UPDATE tbl_region
+      UPDATE tbl_Region
       SET IsActive = 0
       WHERE RegionID = ?
     `;
