@@ -11,7 +11,7 @@ exports.addProduct = async (req, res) => {
        }
 
     const checkSql = `
-      SELECT * FROM tbl_product
+      SELECT * FROM tbl_Product
       WHERE ProductCode = ?
     `;
 
@@ -23,7 +23,7 @@ exports.addProduct = async (req, res) => {
       });
     }
     const sql = `
-      INSERT INTO tbl_product
+      INSERT INTO tbl_Product
       (ProductCode, Name, Category, Unit)
       VALUES (?, ?, ?, ?)
     `;
@@ -43,7 +43,7 @@ exports.addProduct = async (req, res) => {
 exports.getProducts = async (req, res) => {
    try {
       const sql = `
-      SELECT * FROM tbl_product
+      SELECT * FROM tbl_Product
       WHERE IsActive = 1
     `;
      const [result] = await db.query(sql);
@@ -67,7 +67,7 @@ exports.updateProduct = async (req, res) => {
       });
      }
      const sql = `
-      UPDATE tbl_product
+      UPDATE tbl_Product
       SET ProductCode=?, Name=?, Category=?, Unit=?
       WHERE ProductID=?
     `;
@@ -92,7 +92,7 @@ exports.deleteProduct = async (req, res) => {
   try {
      const { id } = req.params;
      const sql = `
-      UPDATE tbl_product
+      UPDATE tbl_Product
       SET IsActive = 0
       WHERE ProductID = ?
     `;

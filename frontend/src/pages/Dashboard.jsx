@@ -174,7 +174,25 @@ return (
   >
     Logout
   </button>
+{role === "Admin" && (
+  <>
+    <Link to="/users" className="btn btn-dark">
+      Users
+    </Link>
 
+    <Link to="/products" className="btn btn-secondary">
+      Products
+    </Link>
+
+    <Link to="/salesperson" className="btn btn-info">
+      Sales Persons
+    </Link>
+
+    <Link to="/regions" className="btn btn-success">
+      Regions
+    </Link>
+  </>
+)}
 </div>
 
     <div className="text-center mb-4">

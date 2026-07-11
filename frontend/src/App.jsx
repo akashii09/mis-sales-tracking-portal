@@ -16,6 +16,11 @@ import VarianceReport from "./pages/VarianceReport";
 import ManagerDashboard from "./pages/ManagerDashboard";
 import SalesDashboard from "./pages/SalesDashboard";
 import ViewerDashboard from "./pages/ViewerDashboard";
+import Users from "./pages/Users";
+
+import Products from "./pages/Products";
+import SalesPersons from "./pages/SalesPerson";
+import Regions from "./pages/Regions";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import ForgotPassword from "./pages/forgotPassword";
@@ -90,7 +95,16 @@ function App() {
           </ProtectedRoute>
           }
         />
-
+        <Route
+  path="/users"
+  element={
+    <ProtectedRoute>
+      <RoleProtectedRoute allowedRoles={["Admin"]}>
+        <Users />
+      </RoleProtectedRoute>
+    </ProtectedRoute>
+  }
+/>
 <Route
 path="/sales-dashboard"
 element={
@@ -111,6 +125,39 @@ element={
 </RoleProtectedRoute>
 </ProtectedRoute>
 }
+/>
+
+<Route
+  path="/products"
+  element={
+    <ProtectedRoute>
+      <RoleProtectedRoute allowedRoles={["Admin"]}>
+        <Products />
+      </RoleProtectedRoute>
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/salesperson"
+  element={
+    <ProtectedRoute>
+      <RoleProtectedRoute allowedRoles={["Admin"]}>
+        <SalesPersons />
+      </RoleProtectedRoute>
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/regions"
+  element={
+    <ProtectedRoute>
+      <RoleProtectedRoute allowedRoles={["Admin"]}>
+        <Regions />
+      </RoleProtectedRoute>
+    </ProtectedRoute>
+  }
 />
       </Routes>
     </BrowserRouter>
