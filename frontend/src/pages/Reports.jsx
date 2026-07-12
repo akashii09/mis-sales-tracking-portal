@@ -153,7 +153,8 @@ const exportPDF = () => {
 
               <td>{row.TargetQty}</td>
 
-              <td>{row.AchQty}</td>
+              <td>{row.AchievementQty}
+</td>
 
             </tr>
 
