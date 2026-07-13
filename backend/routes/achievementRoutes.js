@@ -68,7 +68,7 @@ router.post(
 router.get(
     "/all",
     authMiddleware,
-    checkRole("Admin", "Manager", "Viewer"),
+    checkRole("Admin", "Manager", "Viewer","Sales Executive"),
     achievementController.getAchievements
 );
 /**
