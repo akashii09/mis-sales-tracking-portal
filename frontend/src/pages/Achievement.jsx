@@ -104,6 +104,7 @@ function Achievement() {
 
           <div className="col-md-2">
             <input
+              type="number"
               className="form-control"
               placeholder="Qty"
               value={form.AchQty}
@@ -115,6 +116,7 @@ function Achievement() {
 
           <div className="col-md-2">
             <input
+              type="number"
               className="form-control"
               placeholder="Value"
               value={form.AchValue}

@@ -11,15 +11,18 @@ import autoTable from "jspdf-autotable";
 function Reports() {
 
   const [data, setData] = useState([]);
+  const [loading, setLoading]= useState(true);
   console.log("REPORT DATA =", data);
   useEffect(() => {
 
     API.get("/reports/achievement-report")
       .then((res) => {
         setData(res.data);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
       });
 
   }, []);
@@ -103,6 +106,7 @@ const exportPDF = () => {
     <div>
 
       <h1> Achievement Report</h1>
+      {loading && <h5>Loading...</h5>}
       <div className="mb-3">
 
   <Link
